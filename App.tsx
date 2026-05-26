@@ -13,8 +13,9 @@ import { ViroARSceneNavigator } from "@reactvision/react-viro";
 import CenaImagem from "./src/scenes/CenaImagem";
 import CenaPlano from "./src/scenes/CenaPlano";
 import CenaInterativa from "./src/scenes/CenaInterativa";
+import CenaPlanoInterativa from "./src/scenes/CenaPlanoInterativa";
 
-type TelaAR = "imagem" | "plano" | "interativo" | null;
+type TelaAR = "imagem" | "plano" | "interativo" | "planoInterativo" | null;
 
 export default function App() {
   const [telaAtual, setTelaAtual] = useState<TelaAR>(null);
@@ -30,6 +31,10 @@ export default function App() {
 
     if (telaAtual === "interativo") {
       return CenaInterativa;
+    }
+
+    if (telaAtual === "planoInterativo") {
+      return CenaPlanoInterativa;
     }
 
     return null;
@@ -84,9 +89,19 @@ export default function App() {
         style={styles.button}
         onPress={() => setTelaAtual("interativo")}
       >
-        <Text style={styles.buttonTitle}>3. Objeto interativo</Text>
+        <Text style={styles.buttonTitle}>3. Objeto interativo na imagem</Text>
         <Text style={styles.buttonDescription}>
           Reconhece uma imagem e permite tocar no objeto para alterar sua cor.
+        </Text>
+      </Pressable>
+
+      <Pressable
+        style={styles.button}
+        onPress={() => setTelaAtual("planoInterativo")}
+      >
+        <Text style={styles.buttonTitle}>4. Objeto interativo no plano</Text>
+        <Text style={styles.buttonDescription}>
+          Detecta uma superfície plana e permite tocar no objeto para alterar sua cor.
         </Text>
       </Pressable>
     </SafeAreaView>
@@ -136,7 +151,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1E293B",
     padding: 18,
     borderRadius: 16,
-    marginBottom: 16,
+    marginBottom: 14,
     borderWidth: 1,
     borderColor: "#334155"
   },
