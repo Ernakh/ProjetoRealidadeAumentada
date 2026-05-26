@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ViroAmbientLight,
   ViroARPlaneSelector,
@@ -10,6 +10,7 @@ import {
 import { criarMateriais } from "./materials";
 
 export default function CenaPlano() {
+  const seletorPlanoRef = useRef<any>(null);
   const [planoSelecionado, setPlanoSelecionado] = useState(false);
 
   useEffect(() => {
@@ -17,7 +18,18 @@ export default function CenaPlano() {
   }, []);
 
   return (
-    <ViroARScene anchorDetectionTypes={["PlanesHorizontal", "PlanesVertical"]}>
+    <ViroARScene
+      anchorDetectionTypes={["PlanesHorizontal", "PlanesVertical"]}
+      onAnchorFound={(anchor) => {
+        seletorPlanoRef.current?.handleAnchorFound(anchor);
+      }}
+      onAnchorUpdated={(anchor) => {
+        seletorPlanoRef.current?.handleAnchorUpdated(anchor);
+      }}
+      onAnchorRemoved={(anchor) => {
+        seletorPlanoRef.current?.handleAnchorRemoved(anchor);
+      }}
+    >
       <ViroAmbientLight color="#ffffff" intensity={500} />
 
       {!planoSelecionado && (
@@ -35,9 +47,12 @@ export default function CenaPlano() {
       )}
 
       <ViroARPlaneSelector
+        ref={seletorPlanoRef}
         alignment="Both"
         hideOverlayOnSelection={true}
-        onPlaneSelected={() => setPlanoSelecionado(true)}
+        onPlaneSelected={() => {
+          setPlanoSelecionado(true);
+        }}
       >
         <ViroBox
           position={[0, 0.1, 0]}
