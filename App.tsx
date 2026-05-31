@@ -14,11 +14,22 @@ import CenaImagem from "./src/scenes/CenaImagem";
 import CenaPlano from "./src/scenes/CenaPlano";
 import CenaInterativa from "./src/scenes/CenaInterativa";
 import CenaPlanoInterativa from "./src/scenes/CenaPlanoInterativa";
+import CenaCatalogoAR from "./src/scenes/CenaCatalogoAR";
 
-type TelaAR = "imagem" | "plano" | "interativo" | "planoInterativo" | null;
+type TelaAR =
+  | "imagem"
+  | "plano"
+  | "interativo"
+  | "planoInterativo"
+  | "catalogo"
+  | null;
+
+type ObjetoCatalogo = "cubo" | "esfera" | "placa";
 
 export default function App() {
   const [telaAtual, setTelaAtual] = useState<TelaAR>(null);
+  const [objetoSelecionado, setObjetoSelecionado] =
+    useState<ObjetoCatalogo>("cubo");
 
   const cenaSelecionada = useMemo(() => {
     if (telaAtual === "imagem") {
@@ -37,6 +48,10 @@ export default function App() {
       return CenaPlanoInterativa;
     }
 
+    if (telaAtual === "catalogo") {
+      return CenaCatalogoAR;
+    }
+
     return null;
   }, [telaAtual]);
 
@@ -48,6 +63,9 @@ export default function App() {
           initialScene={{
             scene: cenaSelecionada as any
           }}
+          viroAppProps={{
+            objetoSelecionado
+          }}
           style={styles.arContainer}
         />
 
@@ -58,6 +76,32 @@ export default function App() {
           >
             <Text style={styles.voltarButtonText}>Voltar</Text>
           </Pressable>
+
+          {telaAtual === "catalogo" && (
+            <View style={styles.catalogoOverlay}>
+              <Text style={styles.catalogoTitulo}>Escolha o objeto:</Text>
+
+              <View style={styles.catalogoBotoes}>
+                <BotaoObjeto
+                  titulo="Cubo"
+                  ativo={objetoSelecionado === "cubo"}
+                  onPress={() => setObjetoSelecionado("cubo")}
+                />
+
+                <BotaoObjeto
+                  titulo="Esfera"
+                  ativo={objetoSelecionado === "esfera"}
+                  onPress={() => setObjetoSelecionado("esfera")}
+                />
+
+                <BotaoObjeto
+                  titulo="Placa"
+                  ativo={objetoSelecionado === "placa"}
+                  onPress={() => setObjetoSelecionado("placa")}
+                />
+              </View>
+            </View>
+          )}
         </SafeAreaView>
       </View>
     );
@@ -104,7 +148,48 @@ export default function App() {
           Detecta uma superfície plana e permite tocar no objeto para alterar sua cor.
         </Text>
       </Pressable>
+
+      <Pressable
+        style={styles.button}
+        onPress={() => setTelaAtual("catalogo")}
+      >
+        <Text style={styles.buttonTitle}>5. Catálogo AR no plano</Text>
+        <Text style={styles.buttonDescription}>
+          Escolha entre cubo, esfera ou placa e posicione o objeto em uma superfície.
+        </Text>
+      </Pressable>
     </SafeAreaView>
+  );
+}
+
+function BotaoObjeto({
+  titulo,
+  ativo,
+  onPress
+}: {
+  titulo: string;
+  ativo: boolean;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable
+      style={[
+        styles.botaoObjeto,
+        ativo ? styles.botaoObjetoAtivo : styles.botaoObjetoInativo
+      ]}
+      onPress={onPress}
+    >
+      <Text
+        style={[
+          styles.botaoObjetoTexto,
+          ativo
+            ? styles.botaoObjetoTextoAtivo
+            : styles.botaoObjetoTextoInativo
+        ]}
+      >
+        {titulo}
+      </Text>
+    </Pressable>
   );
 }
 
@@ -130,6 +215,44 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontWeight: "bold"
   },
+  catalogoOverlay: {
+    marginTop: 12,
+    backgroundColor: "rgba(15, 23, 42, 0.85)",
+    padding: 12,
+    borderRadius: 16
+  },
+  catalogoTitulo: {
+    color: "#ffffff",
+    fontWeight: "bold",
+    marginBottom: 8
+  },
+  catalogoBotoes: {
+    flexDirection: "row",
+    gap: 8
+  },
+  botaoObjeto: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 14,
+    borderWidth: 1
+  },
+  botaoObjetoAtivo: {
+    backgroundColor: "#2563EB",
+    borderColor: "#60A5FA"
+  },
+  botaoObjetoInativo: {
+    backgroundColor: "rgba(30, 41, 59, 0.9)",
+    borderColor: "#475569"
+  },
+  botaoObjetoTexto: {
+    fontWeight: "bold"
+  },
+  botaoObjetoTextoAtivo: {
+    color: "#ffffff"
+  },
+  botaoObjetoTextoInativo: {
+    color: "#CBD5E1"
+  },
   container: {
     flex: 1,
     backgroundColor: "#0F172A",
@@ -138,32 +261,32 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#ffffff",
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: "bold",
     marginBottom: 12
   },
   subtitle: {
     color: "#CBD5E1",
     fontSize: 16,
-    marginBottom: 32
+    marginBottom: 24
   },
   button: {
     backgroundColor: "#1E293B",
-    padding: 18,
+    padding: 16,
     borderRadius: 16,
-    marginBottom: 14,
+    marginBottom: 12,
     borderWidth: 1,
     borderColor: "#334155"
   },
   buttonTitle: {
     color: "#ffffff",
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "bold",
     marginBottom: 6
   },
   buttonDescription: {
     color: "#CBD5E1",
-    fontSize: 14,
-    lineHeight: 20
+    fontSize: 13,
+    lineHeight: 18
   }
 });
