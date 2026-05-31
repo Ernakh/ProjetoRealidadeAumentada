@@ -7,12 +7,17 @@
     "ios": {
       "bundleIdentifier": "com.ernakh.appar",
       "infoPlist": {
-        "NSCameraUsageDescription": "Este app usa a câmera para experiências de realidade aumentada."
+        "NSCameraUsageDescription": "Este app usa a câmera para experiências de realidade aumentada.",
+        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos",
+        "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos",
+        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to use your microphone"
       }
     },
     "android": {
       "package": "com.ernakh.appar",
-      "permissions": ["CAMERA"]
+      "permissions": [
+        "CAMERA"
+      ]
     },
     "plugins": [
       [
@@ -26,6 +31,11 @@
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "97ab8285-38e4-45de-956d-c43b4aa52680"
+      }
+    }
   }
 }

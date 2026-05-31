@@ -15,6 +15,7 @@ import CenaPlano from "./src/scenes/CenaPlano";
 import CenaInterativa from "./src/scenes/CenaInterativa";
 import CenaPlanoInterativa from "./src/scenes/CenaPlanoInterativa";
 import CenaCatalogoAR from "./src/scenes/CenaCatalogoAR";
+import CenaCarroNaCapa from "./src/scenes/CenaCarroNaCapa";
 
 type TelaAR =
   | "imagem"
@@ -22,6 +23,7 @@ type TelaAR =
   | "interativo"
   | "planoInterativo"
   | "catalogo"
+  | "carroNaCapa"
   | null;
 
 type ObjetoCatalogo = "cubo" | "esfera" | "placa";
@@ -50,6 +52,10 @@ export default function App() {
 
     if (telaAtual === "catalogo") {
       return CenaCatalogoAR;
+    }
+
+    if (telaAtual === "carroNaCapa") {
+      return CenaCarroNaCapa;
     }
 
     return null;
@@ -158,6 +164,17 @@ export default function App() {
           Escolha entre cubo, esfera ou placa e posicione o objeto em uma superfície.
         </Text>
       </Pressable>
+
+      <Pressable
+        style={styles.button}
+        onPress={() => setTelaAtual("carroNaCapa")}
+      >
+        <Text style={styles.buttonTitle}>6. Porsche na capa do livro</Text>
+        <Text style={styles.buttonDescription}>
+          Reconhece a capa cadastrada e renderiza um carro 3D sobre ela.
+        </Text>
+      </Pressable>
+
     </SafeAreaView>
   );
 }
