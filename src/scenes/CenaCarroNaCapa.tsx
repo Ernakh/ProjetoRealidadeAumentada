@@ -27,7 +27,7 @@ export default function CenaCarroNaCapa() {
         <ViroText
           text="Aponte a câmera para a capa do livro"
           position={[0, 0, -1]}
-          scale={[0.8, 0.8, 0.8]}
+          scale={[0.1, 0.1, 0.1]}
           style={{
             fontSize: 24,
             color: "#ffffff",
@@ -66,7 +66,7 @@ export default function CenaCarroNaCapa() {
             source={require("../../assets/models/porsche.glb")}
             type="GLB"
             position={[0, 0.05, 0]}
-            scale={[0.01, 0.01, 0.01]}
+            scale={[0.08, 0.08, 0.08]}
             rotation={[0, 0, 0]}
             onLoadStart={() => {
               console.log("Carregando Porsche...");
